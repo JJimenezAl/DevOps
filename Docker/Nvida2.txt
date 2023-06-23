@@ -1,0 +1,93 @@
+yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+ yum repolist -v
+sudo yum install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el7.x86_64.rpm
+
+sudo yum install docker-ce -y
+
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+   && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.repo | sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
+
+
+
+ yum clean expire-cache
+
+sudo yum install -y nvidia-docker2
+
+docker pull nvidia/cuda:10.0-devel-centos7
+
+sudo docker run --rm --gpus all nvidia/cuda:11.0.3-base-ubuntu20.04 nvidia-smi
+
+######################
+
+
+singularity build --sandbox nvidiaInst docker://centos:centos7.9.2009
+
+
+singularity shell -w --no-home nvidiaInst
+
+yum upgrade -y 
+
+yum groupinstall "Development tools"
+
+yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+yum install kernel-devel-$(uname -r) kernel-headers-$(uname -r)
+
+
+yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+
+
+#OJO no cohe vbs de entorno del link de nvidia   yum-config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/$distro/$arch/cuda-$distro.repo
+
+#asi que pongo las pongo a mano.Puedo ver toda la estrcutura por si me toca otra distro en https://developer.download.nvidia.com/compute/cuda/repos/
+#Acordarse de acabar link con el fichero .repo
+
+yum-config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/cuda-rhel7.repo
+
+
+
+
+yum install nvidia-driver-latest-dkms
+
+yum install cuda
+
+yum install cuda-drivers
+
+
+mismatch con drivers del gpu intel
+
+INtento las mismas versiones
+
+nvidia-driver-latest-NvFBCOpenGL-495.29.05-1.el7.x86_64
+nvidia-persistenced-latest-495.29.05-1.el7.x86_64
+yum-plugin-nvidia-0.5-1.el7.noarch
+nvidia-driver-latest-NVML-495.29.05-1.el7.x86_64
+nvidia-driver-local-repo-rhel7-470.57.02-1.0-1.x86_64
+kmod-nvidia-latest-dkms-495.29.05-1.el7.x86_64
+nvidia-driver-latest-devel-495.29.05-1.el7.x86_64
+nvidia-modprobe-latest-495.29.05-1.el7.x86_64
+nvidia-driver-latest-cuda-495.29.05-1.el7.x86_64
+nvidia-xconfig-latest-495.29.05-1.el7.x86_64
+nvidia-driver-latest-495.29.05-1.el7.x86_64
+nvidia-driver-latest-libs-495.29.05-1.el7.x86_64
+nvidia-driver-latest-cuda-libs-495.29.05-1.el7.x86_64
+
+
+
+
+
+
+
+
+
+
+yum install https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/nvidia-driver-latest-495.29.05-1.el7.x86_64.rpm
+
+
+
+yum install https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/cuda-11-5-11.5.0-1.x86_64.rpm
+
+yum install https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/cuda-drivers-495.29.05-1.x86_64.rpm
+

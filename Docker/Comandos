@@ -1,0 +1,165 @@
+docker pull rocker/rstudio
+
+https://hub.docker.com/r/rocker/rstudio
+
+#quito 127.0.0.1
+
+
+
+#docker run --rm  -p 8787:8787 -e DISABLE_AUTH=true  -v /home/python/R:/home/rstudio rocker/rstudio 
+mejor no /home en el contanedor asi no cambio permisos
+
+docker run --rm  -p 8787:8787 -e DISABLE_AUTH=true -v /home/python/R:/shared/R  rocker/rstudio 
+
+eliminar la primera columna 
+ docker exec -it $(docker ps | awk '{print $1}' |tail -1)  /bin/bash
+o 
+
+docker exec -it $(docker ps | awk 'NR>1{print $1}')  /bin/bash
+
+docker stop $(docker ps | grep rstudio | awk '{print $1}')
+
+
+
+
+
+
+docker pull jupyter/datascience-notebook
+
+
+docker run -p 8888:8888 jupyter/datascience-notebook
+
+
+shell
+
+docker exec -it jupyter/datascience-notebook /bin/bash
+
+
+
+si no va este nombre de contenedor probar  con este probar con el id que se ve en docker -ps
+
+
+montar carpeta
+
+docker run -p 8888:8888 -v /tmp/notebooks:/tmp/notebooks jupyter/datascience-notebook
+
+mapeo en tutorial
+
+docker run \
+  -v /Users/joshuacook/src:/home/jovyan/src \
+    -d -p 5000:8888 \
+    jupyter/demo
+
+
+
+si ejecutamos el contenedor copn -d de detach habria que ssacr output via logs
+para saber el token
+
+docker logs jupyter/datascience-notebook ?
+
+
+probar
+
+docker run -v 'pwd'/src:/home/jovyan/work jupyter/scipy-notebook python bessel.py
+
+no dejar por permisos. Parece que monta bien pero no tengo permisos en la imagen
+
+¿
+Commit changes to the container:
+
+sudo docker commit <container_id> iman/ping
+?
+
+https://stackoverflow.com/questions/19585028/i-lose-my-data-when-the-container-exits
+
+MOnitor
+docker ps
+docker stats
+
+
+hasta aqui ok
+
+
+
+https://towardsdatascience.com/containerize-your-whole-data-science-environment-or-anything-you-want-with-docker-compose-e962b8ce8ce5
+
+
+pàra reinicio automatico?
+
+
+
+docker update --restart unless-stopped container_id
+
+
+docker exec -it jupyter/datascience-notebook /bin/bash
+
+
+
+si no va este nombre de contenedor probar  con este probar con el id que se ve en docker -ps
+Probar
+
+docker-machine ls
+docker-machine ip default
+
+sin root
+
+sudo groupadd docker $ sudo usermod -aG docker $USER
+
+
+docker build
+
+docker build -t gsl docker
+
+## Build
+
+docker build -t joshuacook/gsl gsl
+
+GSL Dockerfile
+FROM gcc
+LABEL maintainer=@joshuacook
+RUN apt-get update && \
+      apt-get install -y \
+      gsl-bin \
+      libgsl0-dbg \
+      libgsl0-dev \
+      libgsl0ldbl
+
+
+pruebas yo a instalar algo en alpine
+
+docker pull alpine
+
+docker images fedora
+docker image ls
+
+si ejecuto varios a la vez a ver como distingo nombres
+
+docker rename my_container my_new_container
+
+docker run -d alpine /bin/sh -c "while true; do echo hello world; sleep 1;
+
+done"
+
+
+docker stop $(docker ps | grep rstudio | awk '{print $1}')
+
+docker build -t local/my_container .
+sudo singularity build my_container.sif docker-daemon://local/my_container
+
+compose 
+
+#crear y modificar imnagen
+
+docker pull la que sea
+
+ver docker images
+
+docker exec -it container-name bash
+# como tengo nombres duplicados elijo campo image
+
+#hago cambios
+#Sin cerrar la imagen
+
+docker commit container-ID image-name
+
+# en vez de image name  

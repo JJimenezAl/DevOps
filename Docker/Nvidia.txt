@@ -1,0 +1,20 @@
+yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+ yum repolist -v
+sudo yum install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el7.x86_64.rpm
+
+sudo yum install docker-ce -y
+
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+   && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.repo | sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
+
+
+
+ yum clean expire-cache
+
+sudo yum install -y nvidia-docker2
+
+docker pull nvidia/cuda:10.0-devel-centos7
+
+sudo docker run --rm --gpus all nvidia/cuda:11.0.3-base-ubuntu20.04 nvidia-smi
+

@@ -1,0 +1,7 @@
+docker run \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v $HOME:/output \
+--privileged -t --rm \
+singularityware/docker2singularity \
+biobakery/workflows
+docker pull nvidia/cuda:10.0-devel-centos7
