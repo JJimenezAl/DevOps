@@ -1,0 +1,134 @@
+#singularity
+ 
+module load singularity
+singularity pull docker://ubuntu
+singularity shell ubuntu_latest.sif
+singularity exec centos_latest.tif cat /etc/centos-release > prueba
+ echo "Prueba" | singularity exec centos_latest.sif cat -
+ singularity exec centos_latest 
+ 
+ instalar en imagen  libseccomp
+
+##Ejemplo
+
+module load singularity
+
+chmod -R 777 /run/user/0
+singularity build lolcow.simg docker://godlovedc/lolcow
+
+singularity expand container.img 
+#by default 512Mb 
+
+sudo singularity build container.sif container.def
+singularity build --remote output.sif /home/laytonjb/TEST/singularity.def
+
+##EJECUCION
+
+
+./hello-world_latest.sif
+
+The %runscript section of a Singularity container will be executed when the container is run. (You define the script in the Singularity specification file.) A simple example of a %runscript in a specification file is,
+
+%runscript
+    echo "Container was created $NOW"
+    echo "Arguments received: $*"
+    exec echo "$@"
+
+singularity run hello-world_latest.sif
+
+singularity run shub://singularityhub/hello-world
+
+ singularity shell lolcow.sif
+
+singularity exec --nv hello-world.sif /bin/bash
+-nv for nvidia gpu
+
+
+
+##Descarga ubuntu
+
+singularity search ubuntu
+
+singularity pull docker://ubuntu
+singularity run docker://godlovedc/lolcow
+
+
+
+
+singularity ubuntu.simg cat /etc/issue 
+
+singularity build --sandbox  tensor/ ubuntu/ubuntu_latest.sif 
+
+luego hago singularity shell -w imagen para cambios (writable)
+
+
+
+
+## Ejecutamos orden
+
+singularity exec tensor/ cat /etc/issue
+
+singularity exec tensor/  python
+
+##Conexion con shell a contenedor
+
+singularity shell tensor 
+
+./conda install tensorflow==1.15.0
+./pip install tensorflow-addons
+./pip install --user Cython
+./pip install --user contextlib2
+./pip install --user pillow
+./pip install --user lxml
+./pip install --user jupyter
+./pip install --user matplotlib
+
+./git clone https://github.com/tensorflow/models.git
+
+
+/home/nashpc01/anaconda3/bin
+
+
+ ./anaconda3/bin/python tensor.py
+
+
+
+
+#Mapeos
+
+Va mejor esta opcion 
+export SINGULARITY_BIND="/opt,/data:/mnt"
+This will bind /opt on the host to /opt in the container and /data on the host to /mnt in the container.
+
+export SINGULARITY_BIND="/software"
+
+export SINGULARITY_BINDPATH=/software:/software
+
+export SINGULARITY_BINDPATH=/data/scratch/user:/scratch
+
+singularity shell --bind /opt --writable nfcore.simg
+
+
+Singularity can “bind mount” files or directories from the host system to mountpoints in the container. A best practice is for containers not to store their data inside the container (possibly making it very large). Instead, it is highly recommended that you leave the data outside the container and bind mount it to the container from the host system.
+
+With Singularity, the bind option has the form:
+
+--bind src[:dest[:opts]]
+
+The options (opts) are pretty simple: ro, read-only, and rw, read-write (the default); for example:
+
+--bind /scratch:/mnt/scratch:rw
+
+If you need to bind mount several files or directories, you can use a comma-delimited string of bind path specifications, or you can just use a number of --bind options on the command line.
+
+Running an encrypted Singularity image is the same as running an unencrypted image: You can use run, shell, or exec and either a passphrase, a PEM file, or an environment variable. You just use the appropriate option on the command line.
+
+You can also use --fakeroot to run a Singularity image with the following options,
+
+    shell
+    exec
+    run
+    instance start
+    build
+
+which also works when Docker containers are used.

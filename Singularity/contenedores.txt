@@ -1,0 +1,81 @@
+ module load EasyBuild
+  427  module load singularity
+  428  singularity pull docker:powerpc64/debian
+  429  history | grep eb
+  430  history | grep singularity
+  431  singularity build --name power docker://powerpc64/debian
+  432  singularity build --name power.simg docker://powerpc64/debian
+  433  singularity build --name power.simg library://powerpc64/debian
+  434  singularity build power.simg library://powerpc64/debian
+  435  singularity build power.simg docker://powerpc64/debian
+  436  conda deactivate
+  437  ls /home/user/images/power.simg
+  438  ls /home/user/images/power.simg
+  439  sinfularity exec  /home/user/images/power.simg cat /etc/issue
+  440  singularity exec  /home/user/images/power.simg cat /etc/issue
+  441  singularity exec  /home/user/images/power.simg less /etc/issue
+  442  singularity exec  /home/user/images/power.simg less /etc/iss
+  443  singularity exec  /home/user/images/power.simg less  cat /etc/debian_version
+  444  singularity exec  /home/user/images/power.simg cat /etc/debian_version
+  445  singularity exec  /home/user/images/power.simg ls /etc/debian_version
+  446  singularity shell  /home/user/images/power.simg ls /etc/debian_version
+  
+  
+  export SINGULARITY_TMPDIR=/data/scratch/user/images/tmp
+  
+singularity cache clean
+
+
+
+singularity exec /data/scratch/user/images/lolcow.simg cat /etc/issue
+
+
+docker pull powerpc64/centos:latest
+ex---
+
+
+singularity build --sandbox fedora.simg docker://fedora:30
+singularity build fedora.simg docker://fedora:30
+singularity exec fedora.simg cat /etc/redhat-release
+singularity shell --writable fedora.simg
+
+Build a base sandbox from DockerHub, make changes to it, then build sif
+
+singularity build --sandbox /tmp/debian docker://debian:latest
+singularity exec --writable /tmp/debian apt-get install python
+singularity build /tmp/debian2.sif /tmp/debian
+
+
+
+singularity build --sandbox nfcore.simg docker://nfcore/tools:latest
+
+singularity exec nfcore.simg cat /etc/hostname 
+
+singularity shell --writable nfcore.simg
+
+#Alguna unidad fgallo si la intentas montar con writable
+
+
+A note on using --bind with the --writable flag
+
+To mount a bind path inside the container, a bind point must be defined within the container. The bind point is a directory within the container that Singularity can use as a destination to bind a directory on the host system.
+
+Starting in version 3.0, Singularity will do its best to bind mount requested paths into a container regardless of whether the appropriate bind point exists within the container. Singularity can often carry out this operation even in the absence of the “overlay fs” feature.
+
+However, binding paths to non-existent points within the container can result in unexpected behavior when used in conjuction with the --writable flag, and is therefore disallowed. If you need to specify bind paths in combination with the --writable flag, please ensure that the appropriate bind points exist within the container. If they do not already exist, it will be necessary to modify the container and create them.
+
+
+Va mejor esta opcion 
+export SINGULARITY_BIND="/opt,/data:/mnt"
+This will bind /opt on the host to /opt in the container and /data on the host to /mnt in the container.
+
+export SINGULARITY_BIND="/opt,/software,/data/scratch/user"
+
+export SINGULARITY_BIND="/data/scratch/user"
+
+
+#Conversion docker
+
+docker run -v /var/run/docker.sock:/var/run/docker.sock -v $HOME:/output --privileged -t --rm singularityware/docker2singularity biobakery/workflows
+
+

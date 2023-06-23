@@ -1,0 +1,100 @@
+singularity build --sandbox Meta docker://centos:centos7.9.2009
+
+singularity shell -w Meta
+singularity shell -w --no-home Meta
+
+#script insta
+#useradd meta
+
+
+
+yum update -y
+
+yum install python36 python36-devel python36-pip gcc gcc-c++ wget which -y
+
+
+cd /opt/meta
+
+
+
+
+
+python3 -m venv install_workflows
+
+
+
+source install_workflows/bin/activate
+
+
+pip install kneaddata==0.10.0 --no-binary :all:
+
+
+pip install humann==3.0.0.a.4 --no-binary :all:
+
+pip install metaphlan==3.0.7
+
+metaphlan --install --nproc 2
+
+
+pip install cython==0.29.17
+pip install biom-format==2.1.8-1 #probar a no instalarlo 
+humann_test --run-all-tests
+
+#no coincide version. Instala 2.10 aunque el manual habla de 2.8
+
+pip install anadama2
+
+pip install biobakery_workflows==3.0.0a7
+
+biobakery_workflows_databases --install wmgx
+
+
+
+
+if [ -d "$HOME/input_test_run" ]; then rm -Rf $HOME/input_test_run; fi
+
+cd input_test_run
+
+wget https://github.com/biobakery/biobakery_workflows/raw/master/examples/tutorial/input/HD32R1_subsample.fastq.gz
+
+wget https://github.com/biobakery/biobakery_workflows/raw/master/examples/tutorial/input/HD42R4_subsample.fastq.gz
+
+cd ../
+
+biobakery_workflows wmgx --input input_test_run --output output_test_run --bypass-strain-profiling --local-jobs 2 --threads 8
+
+
+
+#CASCA
+
+
+
+
+
+por si hago a mano sin entornos virtuales
+
+¿Serian estas vbs de entrono para simular el pythoj env?
+echo $PATH
+/opt/meta/install_workflows/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+echo $LD_LIBRARY_PATHS
+
+/.singularity.d/libs
+sale esto, habria que modificarlo dentro del contenedor?
+
+
+
+
+
+
+
+
+
+
+
+source /opt/meta/install_workflows/bin/activate
+
+
+
+
+metaphlan

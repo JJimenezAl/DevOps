@@ -1,0 +1,27 @@
+https://github.com/nickjer/singularity-rstudio
+
+
+
+
+
+singularity run --app rserver singularity-rstudio.simg --www-address=0.0.0.0 --www-port=9898
+
+
+
+
+
+
+
+
+
+singularity run --app rserver singularity-rstudio.simg
+
+
+RSTUDIO_PASSWORD=1234 singularity run singularity-rstudio.simg \
+  --auth-none 0 \
+  --auth-pam-helper rstudio_auth 
+  
+  
+  
+  
+ singularity exec rserver --www-address=0.0.0.0 --www-port=9898
